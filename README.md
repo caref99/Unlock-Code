@@ -1,0 +1,149 @@
+# Unlock-Code
+Unlock Code 🔐  Генератор паролей на Python  Возможности:  Создание паролей  Настройка под себя  Восстановление по шаблону  Польза:  Решает проблему паролей  Практика алгоритмов  Просто. Практично. 🎯
+Code:
+import random
+import string
+import itertools
+
+class AdvancedPasswordGenerator:
+    def __init__(self):
+        self.lowercase = string.ascii_lowercase
+        self.uppercase = string.ascii_uppercase
+        self.digits = string.digits
+        self.symbols = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+    
+    def mode1_random_password(self):
+        """Режим 1: Генерация случайных паролей (простой/сложный)"""
+        print("\n=== РЕЖИМ 1: Случайные пароли ===")
+        print("1 - Простой пароль (только буквы)")
+        print("2 - Сложный пароль (буквы, цифры, символы)")
+        
+        choice = input("Выберите тип пароля (1 или 2): ")
+        
+        if choice == "1":
+            # Простой пароль - только буквы
+            length = 10
+            characters = self.lowercase + self.uppercase
+            password = ''.join(random.choice(characters) for _ in range(length))
+            print(f"🔹 Простой пароль: {password}")
+            
+        elif choice == "2":
+            # Сложный пароль - все типы символов
+            length = 16
+            characters = self.lowercase + self.uppercase + self.digits + self.symbols
+            password = ''.join(random.choice(characters) for _ in range(length))
+            print(f"🔸 Сложный пароль: {password}")
+        else:
+            print("❌ Неверный выбор!")
+    
+    def mode2_custom_symbols(self):
+        """Режим 2: Пароль только из разрешенных пользователем символов"""
+        print("\n=== РЕЖИМ 2: Свои символы ===")
+        
+        # Пользователь вводит разрешенные символы
+        allowed_chars = input("Введите разрешенные символы (например: abc123!@): ")
+        
+        if not allowed_chars:
+            print("❌ Нужно ввести хотя бы один символ!")
+            return
+        
+        print("1 - Простой пароль (8 символов)")
+        print("2 - Сложный пароль (12 символов)")
+        choice = input("Выберите длину: ")
+        
+        if choice == "1":
+            length = 8
+        elif choice == "2":
+            length = 12
+        else:
+            print("❌ Неверный выбор!")
+            return
+        
+        # Генерируем пароль только из разрешенных символов
+        password = ''.join(random.choice(allowed_chars) for _ in range(length))
+        print(f"🔹 Ваш пароль: {password}")
+    
+    def mode3_password_recovery(self):
+        """Режим 3: Восстановление пароля по известным частям"""
+        print("\n=== РЕЖИМ 3: Восстановление пароля ===")
+        
+        length = int(input("Введите длину пароля: "))
+        known_parts = input("Введите известные части пароля (используйте ? для неизвестных символов): ")
+        
+        if len(known_parts) != length:
+            print(f"❌ Длина должна быть {length} символов!")
+            return
+        
+        # Определяем какие символы можно использовать
+        print("Какие символы могут быть в пароле?")
+        print("1 - Только цифры (0-9)")
+        print("2 - Только буквы (a-z, A-Z)")
+        print("3 - Буквы и цифры")
+        print("4 - Все символы")
+        
+        char_choice = input("Выберите набор символов (1-4): ")
+        
+        if char_choice == "1":
+            possible_chars = self.digits
+        elif char_choice == "2":
+            possible_chars = self.lowercase + self.uppercase
+        elif char_choice == "3":
+            possible_chars = self.lowercase + self.uppercase + self.digits
+        elif char_choice == "4":
+            possible_chars = self.lowercase + self.uppercase + self.digits + self.symbols
+        else:
+            print("❌ Неверный выбор!")
+            return
+        
+        # Генерируем несколько возможных вариантов
+        print("\n🔍 Возможные пароли:")
+        found_count = 0
+        
+        for i in range(1000):  # Ограничим количество попыток
+            password = []
+            for char in known_parts:
+                if char == '?':
+                    password.append(random.choice(possible_chars))
+                else:
+                    password.append(char)
+            
+            result = ''.join(password)
+            print(f"Вариант {found_count + 1}: {result}")
+            found_count += 1
+            
+            if found_count >= 5:  # Покажем только 5 вариантов
+                break
+        
+        if found_count == 0:
+            print("❌ Не удалось найти подходящие пароли!")
+    
+    def show_menu(self):
+        """Главное меню программы"""
+        while True:
+            print("\n" + "="*50)
+            print("🔐 UNLOCK CODE - Генератор паролей")
+            print("="*50)
+            print("1 - Случайный пароль (простой/сложный)")
+            print("2 - Пароль из своих символов")
+            print("3 - Восстановление пароля по шаблону")
+            print("0 - Выход")
+            print("="*50)
+            
+            choice = input("Выберите режим работы (0-3): ")
+            
+            if choice == "1":
+                self.mode1_random_password()
+            elif choice == "2":
+                self.mode2_custom_symbols()
+            elif choice == "3":
+                self.mode3_password_recovery()
+            elif choice == "0":
+                print("👋 До свидания!")
+                break
+            else:
+                print("❌ Неверный выбор! Попробуйте снова.")
+
+# Запуск программы
+if __name__ == "__main__":
+    generator = AdvancedPasswordGenerator()
+    generator.show_menu()
