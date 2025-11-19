@@ -1,0 +1,16 @@
+Оценка сложности пароля
+
+def password_strength(self, password):
+    """Оценка сложности пароля"""
+    score = 0
+    if len(password) >= 12: score += 2
+    elif len(password) >= 8: score += 1
+    
+    if any(c in self.lowercase for c in password): score += 1
+    if any(c in self.uppercase for c in password): score += 1
+    if any(c in self.digits for c in password): score += 1
+    if any(c in self.symbols for c in password): score += 1
+    
+    strength = {0: "❌ Очень слабый", 1: "🔴 Слабый", 
+                2: "🟡 Средний", 3: "🟢 Хороший", 4: "💪 Отличный", 5: "🔐 Идеальный"}
+    return strength.get(score, "❓ Неизвестно")
