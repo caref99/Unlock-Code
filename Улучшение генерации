@@ -1,0 +1,32 @@
+Расширенная генерация паролей
+
+def generate_advanced_password(self, length, use_lowercase=True, use_uppercase=True, 
+                              use_digits=True, use_symbols=True, exclude_similar=True):
+    """Умная генерация с исключением похожих символов"""
+    characters = ""
+    if use_lowercase: characters += self.lowercase
+    if use_uppercase: characters += self.uppercase
+    if use_digits: characters += self.digits
+    if use_symbols: characters += self.symbols
+    
+    if exclude_similar:
+        # Исключаем похожие символы (1, l, I, 0, O и т.д.)
+        similar_chars = "1lIoO0"
+        characters = ''.join(c for c in characters if c not in similar_chars)
+    
+    if not characters:
+        return "❌ Нужно выбрать хотя бы один тип символов"
+    
+    # Гарантируем хотя бы по одному символу из каждого выбранного типа
+    password = []
+    if use_lowercase: password.append(random.choice(self.lowercase))
+    if use_uppercase: password.append(random.choice(self.uppercase))
+    if use_digits: password.append(random.choice(self.digits))
+    if use_symbols: password.append(random.choice(self.symbols))
+    
+    # Добиваем до нужной длины
+    while len(password) < length:
+        password.append(random.choice(characters))
+    
+    random.shuffle(password)
+    return ''.join(password[:length])
