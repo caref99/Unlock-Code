@@ -1,0 +1,22 @@
+def mode4_password_analysis(self):
+    print("\n" + "="*40)
+    print("📊 РЕЖИМ 4: Анализ пароля")
+    print("="*40)
+    password = input("Введите пароль для анализа: ")
+    if not password:
+        print("❌ Пароль не может быть пустым!")
+        return
+    strength = self.password_strength(password)
+    print(f"\n📈 Результаты анализа:")
+    print(f"🔐 Пароль: {'*' * len(password)}")
+    print(f"📏 Длина: {len(password)} символов")
+    print(f"💪 Сложность: {strength}")
+    contains_lower = any(c in "abcdefghijklmnopqrstuvwxyz" for c in password)
+    contains_upper = any(c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" for c in password)
+    contains_digits = any(c in "0123456789" for c in password)
+    contains_symbols = any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password)
+    print("\n📋 Содержит:")
+    print(f"  - Строчные буквы: {'✅' if contains_lower else '❌'}")
+    print(f"  - Заглавные буквы: {'✅' if contains_upper else '❌'}")
+    print(f"  - Цифры: {'✅' if contains_digits else '❌'}")
+    print(f"  - Спецсимволы: {'✅' if contains_symbols else '❌'}")
