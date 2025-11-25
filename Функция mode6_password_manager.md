@@ -1,0 +1,39 @@
+def mode6_password_manager(self):
+    print("\n" + "="*40)
+    print("💾 РЕЖИМ 6: Менеджер паролей")
+    print("="*40)
+    print("1 - Сохранить пароль")
+    print("2 - Просмотреть сохраненные пароли")
+    print("3 - Найти пароль по сервису")
+    choice = input("Ваш выбор (1-3): ")
+    if choice == "1":
+        service = input("Название сервиса: ")
+        login = input("Логин/email: ")
+        password = input("Пароль: ")
+        notes = input("Заметки (необязательно): ")
+        if self.password_manager.save_password(service, login, password, notes):
+            print("✅ Пароль сохранен!")
+        else:
+            print("❌ Ошибка сохранения")
+    elif choice == "2":
+        services = self.password_manager.list_services()
+        if not services:
+            print("📭 Нет сохраненных паролей")
+            return
+        print("\n💼 Сохраненные сервисы:")
+        for i, service in enumerate(services, 1):
+            print(f"{i}. {service}")
+    elif choice == "3":
+        service = input("Введите название сервиса: ")
+        password_data = self.password_manager.get_password(service)
+        if password_data:
+            print(f"\n🔍 Найден пароль для {service}:")
+            print(f"👤 Логин: {password_data['login']}")
+            print(f"🔐 Пароль: {password_data['password']}")
+            print(f"📝 Заметки: {password_data.get('notes', 'нет')}")
+            print(f"📅 Создан: {password_data['created'][:10]}")
+            print(f"💪 Сложность: {password_data.get('strength', 'неизвестно')}")
+        else:
+            print("❌ Пароль для этого сервиса не найден")
+    else:
+        print("❌ Неверный выбор!")
